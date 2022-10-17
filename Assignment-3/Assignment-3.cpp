@@ -3,6 +3,89 @@
 #include <vector>
 using namespace std;
 
+//Queue class without using vectors
+class Queue {
+private:
+	int* arr;
+	int front;
+	int rear;
+	int size;
+public:
+	//default constructor
+	Queue() {
+		arr = new int[10];
+		front = -1;
+		rear = -1;
+		size = 10;
+	}
+	Queue(int size) {
+		this->size = size;
+		front = -1;
+		rear = -1;
+		arr = new int[size];
+	}
+	//function to check if queue is empty
+	bool isEmpty() {
+		if (front == -1 && rear == -1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	//function to check if queue is full
+	bool isFull() {
+		if ((rear + 1) % size == front) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	//function to add element to queue
+	void enqueue(int value) {
+		if (isFull()) {
+			cout << "Queue is full" << endl;
+		}
+		else if (isEmpty()) {
+			front = 0;
+			rear = 0;
+			arr[rear] = value;
+		}
+		else {
+			rear = (rear + 1) % size;
+			arr[rear] = value;
+		}
+	}
+	//function to remove element from queue
+	void dequeue() {
+		if (isEmpty()) {
+			cout << "Queue is empty" << endl;
+		}
+		else if (front == rear) {
+			front = -1;
+			rear = -1;
+		}
+		else {
+			front = (front + 1) % size;
+		}
+	}
+	//function to display elements of queue
+	void display() {
+		if (isEmpty()) {
+			cout << "Queue is empty" << endl;
+		}
+		else {
+			int i = front;
+			while (i != rear) {
+				cout << arr[i] << " ";
+				i = (i + 1) % size;
+			}
+			cout << arr[rear] << endl;
+		}
+	}
+};
+
 //LinkedList class
 class LinkedList {
 private:
