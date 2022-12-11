@@ -17,18 +17,32 @@ LinkedList::~LinkedList() {
 	}
 }
 //Add a node to the end of the list
+//Modified addNode function that checks for duplicates and increments the count of the node if a duplicate is found
 void LinkedList::addNode(int n) {
 	Node* temp = new Node;
 	temp->data = n;
 	temp->next = NULL;
+
+	//Check if the given value already exists in the list
+	Node* current = head;
+	while (current != NULL) {
+		if (current->data == n) {
+			//If a duplicate is found, increment the count of that node and return
+			current->count++;
+			return;
+		}
+		current = current->next;
+	}
+
+	//If the given value does not exist in the list, add it to the end of the list
+	temp->count = 1;
 	if (head == NULL) {
 		head = temp;
 		tail = temp;
-		temp = NULL;
 	}
 	else {
 		tail->next = temp;
-		tail = temp;
+		tail = tail->next;
 	}
 	size++;
 }
@@ -94,12 +108,11 @@ int LinkedList::getSize() const {
 
 //Get count of a specific node
 int LinkedList::getCount(int n) const {
-	Node* temp = new Node;
-	temp = head;
+	Node* temp = head;
 	int count = 0;
 	while (temp != NULL) {
-		if (temp->data == n) {
-			count++;
+		if (temp->data == n && temp->count > 0) {
+			return temp->count;
 		}
 		temp = temp->next;
 	}
@@ -119,28 +132,38 @@ int LinkedList::getNode(int pos) const {
 }
 
 //Function that creates a linked list based on the vector's elements. This function should then return the linked list by reference
+//Modified createList function that adds the node to the list if it doesn't already exist
 void LinkedList::createList(vector<int> v, LinkedList& list) {
+	//Iterate through the elements in the vector
 	for (int i = 0; i < v.size(); i++) {
-		list.addNode(v[i]);
-		//Increment the count if repeated
-		Node* temp = new Node;
-		temp = head;
-		while (temp != NULL) {
-			if (temp->data == v[i]) {
-				temp->count++;
+		//Check if the current element already exists in the list
+		bool exists = false;
+		Node* current = head;
+		while (current != NULL) {
+			if (current->data == v[i]) {
+				//If the element exists, increment the count of that node
+				current->count++;
+				exists = true;
+				break;
 			}
-			temp = temp->next;
+			current = current->next;
+		}
+
+		//If the element does not exist in the list, add it to the end of the list
+		if (!exists) {
+			list.addNode(v[i]);
 		}
 	}
 }
-//Function that returns the sum of all the nodes
+
+//Function that calculates the sum of the elements in the linked list
 int LinkedList::sum() {
-	int sum = 0;
-	Node* temp = new Node;
-	temp = head;
+	int total = 0;
+	Node* temp = head;
 	while (temp != NULL) {
-		sum += temp->data;
+		//Add the value of the current node to the total and then add the count of the node to account for duplicates
+		total += temp->data * temp->count;
 		temp = temp->next;
 	}
-	return sum;
+	return total;
 }

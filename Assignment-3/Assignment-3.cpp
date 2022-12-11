@@ -59,8 +59,14 @@ int main() {
 
 	//Get the count of each value in the list
 	cout << "The count of each value in the list is: ";
-	for (int i = 0; i < v.size(); i++) {
-		cout << list.getCount(v[i]) << " ";
+	for (int i = 0; i < list.getSize(); i++) {
+		if (i == 0) { // display the count of the first value in the list
+			cout << list.getCount(v[i]) << " ";
+		}
+		else if (v[i] != v[i - 1]) { // only display the count of each value that is not a duplicate
+			cout << list.getCount(v[i]) << " ";
+		}
 	}
+
 	return 0;
 }

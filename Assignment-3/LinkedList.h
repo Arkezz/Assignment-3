@@ -10,6 +10,12 @@ private:
 		int data;
 		int count;
 		Node* next;
+		//Initialize the node default values
+		Node() {
+			data = 0;
+			count = 0;
+			next = NULL;
+		}
 	};
 	Node* head;
 	Node* tail;
@@ -33,6 +39,7 @@ public:
 	int getSize() const;
 	//Get count of a specific node
 	int getCount(int n) const;
+	void setCount(int n);
 	//Get node at a specific position
 	int getNode(int pos) const;
 	//Function that creates a linked list based on the vector's elements. This function should then return the linked list by reference
